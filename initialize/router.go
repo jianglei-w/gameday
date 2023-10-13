@@ -1,30 +1,15 @@
 package initialize
 
 import (
-	"gameday/global"
-	"gameday/router"
+	v1 "gameday/api/v1"
+	"gameday/middleware"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func Routers() *gin.Engine {
 	Router := gin.Default()
+	Router.Use(middleware.Cors())
+	Router.POST("/admin/login", v1.ApiGroupApp.UserApiGroup.Login)
 
-	adminRouter := router.RouterGroupApp.Admin
-	//userRouter := router.RouterGroupApp.User
-
-	PublicGroup := Router.Group(global.GameConfig.System.RouterPrefix)
-	{
-		PublicGroup.GET("health", func(c *gin.Context) {
-			c.JSON(http.StatusOK, "OK")
-		})
-	}
-	{
-
-	}
-	PrivateGroup := Router.Group(global.GameConfig.System.RouterPrefix)
-	{
-		adminRouter.Admin.InitAdminRouter(PrivateGroup)
-	}
 	return Router
 }

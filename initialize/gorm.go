@@ -1,8 +1,8 @@
 package initialize
 
 import (
+	"gameday/db/model"
 	"gameday/global"
-	"gameday/model/admin"
 	"go.uber.org/zap"
 	"os"
 )
@@ -12,7 +12,7 @@ func RegisterTables() {
 	db := global.GameDB
 	err := db.AutoMigrate(
 		// 管理员表
-		admin.User{},
+		model.Admin{},
 	)
 	if err != nil {
 		global.GameLog.Error("register table failed", zap.Error(err))

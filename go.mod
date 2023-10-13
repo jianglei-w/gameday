@@ -4,8 +4,11 @@ go 1.21.1
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0
+	github.com/fvbock/endless v0.0.0-20170109170031-447134032cb6
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-sql-driver/mysql v1.7.1
+	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/google/uuid v1.1.2
 	github.com/spf13/viper v1.17.0
 	go.uber.org/zap v1.26.0
 	gorm.io/driver/mysql v1.5.2

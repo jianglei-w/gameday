@@ -1,4 +1,4 @@
-package global
+package gameday
 
 import "time"
 

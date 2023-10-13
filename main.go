@@ -27,6 +27,5 @@ func main() {
 	}
 
 	// 启动gin
-	r := initialize.Routers()
-	r.Run(":8080")
+	core.Run()
 }
