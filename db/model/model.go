@@ -5,9 +5,9 @@ import (
 )
 
 type Admin struct {
-	gameday.GameModel ``
-	Username          string `json:"username" gorm:"index"`
-	Password          string `json:"password" gorm:"index"`
+	gameday.GameModel
+	Username string `json:"username" gorm:"index"`
+	Password string `json:"password" gorm:"index"`
 }
 
 func (a *Admin) TableName() string {

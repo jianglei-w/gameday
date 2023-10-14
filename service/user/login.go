@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gameday/db/model"
 	"gameday/global"
+	"gorm.io/gorm"
 )
 
 type UserService struct {
@@ -22,6 +23,9 @@ func (u *UserService) Login(admin *model.Admin) (userInter *model.Admin, err err
 		} else {
 			return nil, errors.New("密码错误")
 		}
+	}
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, errors.New("用户不存在")
 	}
 	return nil, err
 }

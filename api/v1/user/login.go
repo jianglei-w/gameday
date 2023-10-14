@@ -3,11 +3,11 @@ package user
 import (
 	"gameday/db/model"
 	myjwt "gameday/db/model/jwt"
+	"gameday/db/model/request"
 	"gameday/db/model/response"
 	"gameday/global"
 	"gameday/utils"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type BaseApi struct {
@@ -18,28 +18,20 @@ type BaseApi struct {
 //	@Tags		User
 //	@Summary	用户登录
 //	@Produce	json
-//	@Param		data	body	model.Admin	true "用户名, 密码"
+//	@Param		data	body	request.Login	true "用户名, 密码"
 //	@Router		/admin/login [post]
 func (b *BaseApi) Login(c *gin.Context) {
 
-	var l *model.Admin
+	var l *request.Login
 	err := c.ShouldBindJSON(&l)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 7,
-			"data": map[string]interface{}{},
-			"msg":  err.Error(),
-		})
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 	u := &model.Admin{Username: l.Username, Password: l.Password}
 	user, err := userService.Login(u)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 7,
-			"data": map[string]interface{}{},
-			"msg":  "用户名不存在或者密码错误",
-		})
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
 	b.TokenNext(c, user)
@@ -59,22 +51,14 @@ func (b *BaseApi) TokenNext(c *gin.Context, user *model.Admin) {
 
 	token, err := j.CreateToken(claims)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"data": map[string]interface{}{},
-			"msg":  err.Error(),
-		})
+		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": response.LoginResponse{
-			Id:        user.ID,
-			UserName:  user.Username,
-			Password:  user.Password,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
-		},
-		"msg":    "Success",
-		"status": 200,
-	})
+	response.OKWithData(response.LoginResponse{
+		Id:        user.ID,
+		UserName:  user.Username,
+		Password:  user.Password,
+		Token:     token,
+		ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+	}, "登录成功", c)
 }
