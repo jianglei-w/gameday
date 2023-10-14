@@ -4,7 +4,9 @@ import (
 	"gameday/core"
 	"gameday/global"
 	"gameday/initialize"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"io"
 )
 
 func main() {
@@ -25,7 +27,7 @@ func main() {
 		db, _ := global.GameDB.DB()
 		defer db.Close()
 	}
-
+	gin.DefaultWriter = io.Discard
 	// 启动gin
 	core.Run()
 }

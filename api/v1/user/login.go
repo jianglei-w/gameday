@@ -13,6 +13,13 @@ import (
 type BaseApi struct {
 }
 
+// Login
+//
+//	@Tags		User
+//	@Summary	用户登录
+//	@Produce	json
+//	@Param		data	body	model.Admin	true "用户名, 密码"
+//	@Router		/admin/login [post]
 func (b *BaseApi) Login(c *gin.Context) {
 
 	var l *model.Admin

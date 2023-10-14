@@ -1,0 +1,36 @@
+definitions:
+  model.Admin:
+    properties:
+      createAt:
+        description: 创建时间
+        type: string
+      id:
+        description: 主键
+        type: integer
+      password:
+        type: string
+      updateAt:
+        description: 更新时间
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/login:
+    post:
+      parameters:
+      - description: 用户名, 密码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.Admin'
+      produces:
+      - application/json
+      responses: {}
+      summary: 用户登录
+      tags:
+      - User
+swagger: "2.0"
