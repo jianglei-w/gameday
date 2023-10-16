@@ -4,9 +4,7 @@ import (
 	"gameday/core"
 	"gameday/global"
 	"gameday/initialize"
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"io"
 )
 
 func main() {
@@ -18,7 +16,6 @@ func main() {
 	// 初始化zap(日志系统)
 	global.GameLog = core.Zap()
 	zap.ReplaceGlobals(global.GameLog)
-
 	// 初始化gorm(数据库-Mysql)
 	global.GameDB = initialize.Mysql()
 	if global.GameDB != nil {
@@ -27,7 +24,16 @@ func main() {
 		db, _ := global.GameDB.DB()
 		defer db.Close()
 	}
-	gin.DefaultWriter = io.Discard
+	//gin.DefaultWriter = io.Discard
 	// 启动gin
 	core.Run()
+
+	// 编写测试
+	//var user []model.User
+	//var game *model.Game
+	//global.GameDB.Preload("User").Where("id", 1).Find(&game)
+	////_ = global.GameDB.Select("hashcode").Where("game_id = ?", 43).Find(&user)
+	//fmt.Println(game)
+
+	//fmt.Println(*user)
 }

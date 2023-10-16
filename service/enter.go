@@ -1,9 +1,13 @@
 package service
 
-import "gameday/service/user"
+import (
+	"gameday/service/game"
+	"gameday/service/user"
+)
 
-type ServiceGroup struct {
+type serviceGroup struct {
 	UserService user.ServiceGroup
+	GameService game.ServiceGroup
 }
 
-var ServiceGroupApp = new(ServiceGroup)
+var ServiceGroupApp = new(serviceGroup)

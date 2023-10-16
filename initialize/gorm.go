@@ -13,6 +13,10 @@ func RegisterTables() {
 	err := db.AutoMigrate(
 		// 管理员表
 		model.Admin{},
+		// 比赛表
+		model.Game{},
+		// 比赛选手表
+		model.User{},
 	)
 	if err != nil {
 		global.GameLog.Error("register table failed", zap.Error(err))

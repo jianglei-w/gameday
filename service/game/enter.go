@@ -1,5 +1,5 @@
-package user
+package game
 
 type ServiceGroup struct {
-	userService
+	gameGroup
 }

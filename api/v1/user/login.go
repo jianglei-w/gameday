@@ -6,6 +6,7 @@ import (
 	"gameday/db/model/request"
 	"gameday/db/model/response"
 	"gameday/global"
+	"gameday/service"
 	"gameday/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -22,14 +23,14 @@ type BaseApi struct {
 //	@Router		/admin/login [post]
 func (b *BaseApi) Login(c *gin.Context) {
 
-	var l *request.Login
+	var l request.Login
 	err := c.ShouldBindJSON(&l)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
 	u := &model.Admin{Username: l.Username, Password: l.Password}
-	user, err := userService.Login(u)
+	user, err := service.ServiceGroupApp.UserService.Login(u)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
