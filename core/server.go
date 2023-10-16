@@ -22,7 +22,7 @@ func Run() {
 	address := fmt.Sprintf(":%d", global.GameConfig.System.Addr)
 	s := initServer(address, Router)
 	global.GameLog.Info("server run success on ", zap.String("address", address))
-
+	// TODO 替换 fmt.Sprintf这种方式判断
 	if err := s.ListenAndServe(); err != nil && err.Error() != fmt.Sprintf("accept tcp [::]%s: use of closed network connection", address) {
 		global.GameLog.Error("failed to listen gameday server: ", zap.Error(err))
 	}

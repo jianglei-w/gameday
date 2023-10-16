@@ -17,6 +17,10 @@ func RegisterTables() {
 		model.Game{},
 		// 比赛选手表
 		model.User{},
+		// 题目表
+		model.Question{},
+		// 题目组表
+		model.Group{},
 	)
 	if err != nil {
 		global.GameLog.Error("register table failed", zap.Error(err))
