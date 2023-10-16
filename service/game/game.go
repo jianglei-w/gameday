@@ -35,14 +35,14 @@ func (g *gameGroup) CreateGame(game *model.Game) (*model.Game, error) {
 	return nil, errors.New("重复创建比赛")
 }
 
-func GetHashByGameId(gameId uint) (*model.Game, error) {
-	var game *model.Game
-	err := global.GameDB.Preload("Hashes").Where("id = ?", gameId).Find(&game).Error
-	if err != nil {
-		return nil, err
-	}
-	return game, nil
-}
+//func GetHashByGameId(gameId uint) (*model.Game, error) {
+//	var game *model.Game
+//	err := global.GameDB.Preload("Hashes").Where("id = ?", gameId).Find(&game).Error
+//	if err != nil {
+//		return nil, err
+//	}
+//	return game, nil
+//}
 
 // LastGame 查找最后一场比赛
 func (g *gameGroup) LastGame() (*model.Game, error) {
@@ -57,7 +57,8 @@ func (g *gameGroup) LastGame() (*model.Game, error) {
 
 // GetHash 返回此比赛的所有hash
 func (g *gameGroup) GetHash(gameId uint) (*model.Game, error) {
-	game, err := GetHashByGameId(gameId)
+	var game *model.Game
+	err := global.GameDB.Preload("Hashes").Where("id = ?", gameId).Find(&game).Error
 	if err != nil {
 		return nil, err
 	}
