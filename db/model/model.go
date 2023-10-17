@@ -16,14 +16,27 @@ func (a *Admin) TableName() string {
 
 type Game struct {
 	gorm.Model
-	Name   string `json:"game_name"`   // 比赛名称
-	People uint   `json:"people"`      // 参与人数
-	Status bool   `json:"game_status"` // 0是初始化状态，1是开始比赛，2是暂停比赛，3是删除比赛
-	Hashes []User
+	Name    string `json:"game_name"`   // 比赛名称
+	People  uint   `json:"people"`      // 参与人数
+	Status  bool   `json:"game_status"` // 0是初始化状态，1是开始比赛，2是暂停比赛，3是删除比赛
+	GroupID uint   `json:"group_id"`
+	Group   Group  `json:"group"` // 题目组ID
+	Hashes  []User
 }
 
 func (g *Game) TableName() string {
 	return "game"
+}
+
+type Group struct {
+	gorm.Model
+	Name     string     `json:"group_name"` // 题目组名称
+	Question []Question // 包含哪些题目
+	Games    []Game     `gorm:"foreignKey:GroupID"` // 属于哪些比赛
+}
+
+func (g *Group) TableName() string {
+	return "group"
 }
 
 type User struct {
@@ -52,14 +65,4 @@ type Question struct {
 
 func (q *Question) TableName() string {
 	return "question"
-}
-
-type Group struct {
-	gorm.Model
-	Name     string     `json:"group_name"` // 题目组名称
-	Question []Question // 一些题目
-}
-
-func (g *Group) TableName() string {
-	return "group"
 }

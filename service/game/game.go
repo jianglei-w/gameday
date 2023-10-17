@@ -68,7 +68,7 @@ func (g *gameGroup) GetHash(gameId uint) (*model.Game, error) {
 // GetAllGame 返回所有的比赛
 func (g *gameGroup) GetAllGame() ([]*model.Game, error) {
 	var games []*model.Game
-	if err := global.GameDB.Find(&games).Error; err != nil {
+	if err := global.GameDB.Preload("Group").Find(&games).Error; err != nil {
 		return nil, err
 	}
 	return games, nil

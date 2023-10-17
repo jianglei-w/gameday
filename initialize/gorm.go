@@ -12,15 +12,15 @@ func RegisterTables() {
 	db := global.GameDB
 	err := db.AutoMigrate(
 		// 管理员表
-		model.Admin{},
+		&model.Admin{},
 		// 比赛表
-		model.Game{},
+		&model.Game{},
 		// 比赛选手表
-		model.User{},
+		&model.User{},
 		// 题目表
-		model.Question{},
+		&model.Question{},
 		// 题目组表
-		model.Group{},
+		&model.Group{},
 	)
 	if err != nil {
 		global.GameLog.Error("register table failed", zap.Error(err))

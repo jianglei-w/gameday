@@ -18,3 +18,11 @@ func (qs *QuestionService) Upload(quest *model.Question) error {
 	}
 	return errors.New("题目" + quest.Title + "已存在")
 }
+
+func (qs *QuestionService) ShowQuestions() ([]*model.Question, error) {
+	var questions []*model.Question
+	if err := global.GameDB.Find(&questions).Error; err != nil {
+		return nil, err
+	}
+	return questions, nil
+}

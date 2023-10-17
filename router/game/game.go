@@ -19,6 +19,10 @@ func (gr *gameRouter) InitGameRouters(Router *gin.RouterGroup) (R *gin.IRoutes) 
 		gameRouter.GET("getHash", gameApi.GetHash)
 
 		gameRouter.POST("upload", questApi.Upload)
+		gameRouter.GET("showGroup", questApi.ShowGroup)
+		gameRouter.GET("questions", questApi.ShowQuestions)
+		gameRouter.POST("setGameid", questApi.SetGameID)
+		gameRouter.POST("createGroup", questApi.CreateGroup)
 	}
 	return R
 }
