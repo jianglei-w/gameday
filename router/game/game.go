@@ -17,12 +17,14 @@ func (gr *gameRouter) InitGameRouters(Router *gin.RouterGroup) (R *gin.IRoutes) 
 		gameRouter.GET("lastGame", gameApi.LastGame)
 		gameRouter.GET("getallGame", gameApi.GetAllGame)
 		gameRouter.GET("getHash", gameApi.GetHash)
+		gameRouter.GET("RankList", gameApi.RankList)
 
 		gameRouter.POST("upload", questApi.Upload)
 		gameRouter.GET("showGroup", questApi.ShowGroup)
 		gameRouter.GET("questions", questApi.ShowQuestions)
 		gameRouter.POST("setGameid", questApi.SetGameID)
 		gameRouter.POST("createGroup", questApi.CreateGroup)
+		gameRouter.GET("oneGroup", questApi.QuestionsById)
 	}
 	return R
 }

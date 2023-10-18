@@ -26,3 +26,13 @@ func (qs *QuestionService) ShowQuestions() ([]*model.Question, error) {
 	}
 	return questions, nil
 }
+
+func (qs *QuestionService) QuestionsById(GroupID uint) (*model.Group, error) {
+	var group *model.Group
+
+	if err := global.GameDB.Preload("Questions").Where("id = ?", GroupID).Find(&group).Error; err != nil {
+		return nil, err
+	}
+
+	return group, nil
+}

@@ -5,6 +5,7 @@ import (
 	"gameday/db/model/response"
 	"gameday/service"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type QuestApi struct {
@@ -32,7 +33,23 @@ func (q *QuestApi) ShowQuestions(c *gin.Context) {
 
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
+		return
 	}
 
 	response.OKWithData(questions, "查询成功", c)
+}
+
+func (q *QuestApi) QuestionsById(c *gin.Context) {
+	groupId, err := strconv.ParseUint(c.Query("group_id"), 10, 64)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	group, err := questService.QuestionsById(uint(groupId))
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OKWithData(group, "查询成功", c)
+
 }

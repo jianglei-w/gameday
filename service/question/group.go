@@ -28,7 +28,8 @@ func (qs *QuestionService) CreateGroup(group *model.Group) (*model.Group, error)
 }
 
 func (qs *QuestionService) SetGameId(setGame *request.GroupRequest) error {
-	// TODO暂不做判断
+	// TODO 暂不确定做不做判断
+	// 一个游戏是否只有一个题目组（不确定）
 
 	err := global.GameDB.Model(&model.Game{}).Where("id", setGame.GameId).Update("group_id", setGame.GroupId).Error
 	if err != nil {

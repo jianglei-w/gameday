@@ -5,6 +5,7 @@ import (
 	"gameday/db/model"
 	"gameday/global"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type gameGroup struct {
@@ -73,3 +74,19 @@ func (g *gameGroup) GetAllGame() ([]*model.Game, error) {
 	}
 	return games, nil
 }
+
+// RankList 返回这个比赛的排行榜
+func (g *gameGroup) RankList(GameId uint) (*model.Game, error) {
+	var game *model.Game
+
+	// 骚操作，自定义Preload, 返回排序好的关系，在这里也就是返回属于game_id的User（按照score倒序）
+	err := global.GameDB.Preload("Hashes", func(db *gorm.DB) *gorm.DB {
+		return db.Order("user.score DESC")
+	}).Where("id = ?", GameId).Find(&game).Error
+	if err != nil {
+		return nil, err
+	}
+	return game, nil
+}
+
+//

@@ -81,3 +81,19 @@ func (g *GameApi) GetAllGame(c *gin.Context) {
 
 	response.OKWithData(games, "查询成功", c)
 }
+
+// RankList 排行榜
+func (g *GameApi) RankList(c *gin.Context) {
+	gameId, err := strconv.ParseUint(c.Query("game_id"), 10, 64)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	game, err := gameService.RankList(uint(gameId))
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OKWithData(game, "查询成功", c)
+}
