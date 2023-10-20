@@ -8,6 +8,7 @@ import (
 type UserRouter struct {
 }
 
+// InitUserRouter 初始化管理员登录路由，无鉴权
 func (ur *UserRouter) InitUserRouter(Router *gin.RouterGroup) (R *gin.IRoutes) {
 	userRouter := Router.Group("admin")
 	userApi := v1.ApiGroupApp.UserApiGroup

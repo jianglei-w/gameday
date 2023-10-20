@@ -10,7 +10,7 @@ import (
 func (qs *QuestionService) ShowGroup() (*[]model.Group, error) {
 	var groups []model.Group
 
-	if err := global.GameDB.Find(&groups).Error; err != nil {
+	if err := global.GameDB.Preload("Questions").Find(&groups).Error; err != nil {
 		return nil, err
 	}
 

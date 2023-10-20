@@ -48,3 +48,24 @@ func (q *QuestApi) SetGameID(c *gin.Context) {
 	}
 	response.OKWithMessage("设置成功", c)
 }
+
+func (q *QuestApi) DeleteQuestionInGroup(c *gin.Context) {
+	type question struct {
+		GroupID    uint `json:"group_id"`
+		QuestionID uint `json:"question_id"`
+	}
+	var quest question
+	err := c.ShouldBindJSON(&quest)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = questApi.DeleteQuestionInGroup(quest.GroupID, quest.QuestionID)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OKWithMessage("移除成功", c)
+}

@@ -35,5 +35,12 @@ func main() {
 	////_ = global.GameDB.Select("hashcode").Where("game_id = ?", 43).Find(&user)
 	//fmt.Println(game)
 
+	//err := global.GameDB.Create(&request.QuestionGroup{
+	//	GroupID:    1,
+	//	QuestionID: 5,
+	//}).Error
+	//if err != nil {
+	//	panic(err)
+	//}
 	//fmt.Println(*user)
 }

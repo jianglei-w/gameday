@@ -18,7 +18,7 @@ type Game struct {
 	gorm.Model
 	Name    string `json:"game_name"`   // 比赛名称
 	People  uint   `json:"people"`      // 参与人数
-	Status  bool   `json:"game_status"` // 0是初始化状态，1是开始比赛，2是暂停比赛，3是删除比赛
+	Status  uint   `json:"game_status"` // 0是初始化状态，1是开始比赛，2是暂停比赛，3是删除比赛
 	GroupID uint   `json:"group_id"`
 	Group   Group  `json:"group"` // 题目组ID
 	Hashes  []User
@@ -45,7 +45,7 @@ type User struct {
 	//event = db.relationship('Event', backref='user')
 	Hashcode string `json:"hashcode"`
 	Username string `json:"username"`
-	Status   bool   `json:"status" ` // 名字审核状态
+	Status   uint   `json:"status" ` // 名字审核状态0：未设置，1: 待审核，2：审核通过，3: 已驳回
 	GameID   uint   `json:"game_id"`
 	Score    uint   `json:"score"`
 }

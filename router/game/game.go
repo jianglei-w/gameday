@@ -18,6 +18,11 @@ func (gr *gameRouter) InitGameRouters(Router *gin.RouterGroup) (R *gin.IRoutes) 
 		gameRouter.GET("getallGame", gameApi.GetAllGame)
 		gameRouter.GET("getHash", gameApi.GetHash)
 		gameRouter.GET("RankList", gameApi.RankList)
+		gameRouter.POST("startGame", gameApi.StartGame)
+		gameRouter.POST("stopGame", gameApi.StopGame)
+		gameRouter.POST("deleteGame", gameApi.DoneGame)
+		gameRouter.POST("success", gameApi.ReviewUserName)
+		gameRouter.POST("refuse", gameApi.RefuseUserName)
 
 		gameRouter.POST("upload", questApi.Upload)
 		gameRouter.GET("showGroup", questApi.ShowGroup)
@@ -25,6 +30,11 @@ func (gr *gameRouter) InitGameRouters(Router *gin.RouterGroup) (R *gin.IRoutes) 
 		gameRouter.POST("setGameid", questApi.SetGameID)
 		gameRouter.POST("createGroup", questApi.CreateGroup)
 		gameRouter.GET("oneGroup", questApi.QuestionsById)
+		gameRouter.POST("addsubject", questApi.AddQuestions)
+		gameRouter.POST("deleteGroupSubject", questApi.DeleteQuestionInGroup)
+		gameRouter.POST("updateQuestion", questApi.UpdateQuestion)
+		gameRouter.POST("deleteQuestion", questApi.DeleteQuestion)
+
 	}
 	return R
 }

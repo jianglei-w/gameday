@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"gameday/db/model"
 	"gameday/db/model/request"
 	"gameday/db/model/response"
@@ -35,10 +36,6 @@ func (g *GameApi) CreateGame(c *gin.Context) {
 	}
 	userList, err := gameService.CreateGame(game)
 
-	//for i := 0; i < len(userList); i++ {
-	//	userList[i].Game.Name = game.Name
-	//}
-
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
@@ -46,6 +43,52 @@ func (g *GameApi) CreateGame(c *gin.Context) {
 	response.OKWithData(userList, "创建成功", c)
 }
 
+func (g *GameApi) StartGame(c *gin.Context) {
+	var r model.Game
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	fmt.Println(r.ID)
+	err = gameService.StartGame(r.ID)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OKWithMessage("比赛已经开始", c)
+}
+
+func (g *GameApi) StopGame(c *gin.Context) {
+	var r model.Game
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = gameService.StopGame(r.ID)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OKWithMessage("比赛已经暂停", c)
+}
+
+func (g *GameApi) DoneGame(c *gin.Context) {
+	var r model.Game
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = gameService.DoneGame(r.ID)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OKWithMessage("比赛已完成", c)
+}
 func (g *GameApi) LastGame(c *gin.Context) {
 
 	users, err := gameService.LastGame()
@@ -96,4 +139,38 @@ func (g *GameApi) RankList(c *gin.Context) {
 		return
 	}
 	response.OKWithData(game, "查询成功", c)
+}
+
+func (g *GameApi) ReviewUserName(c *gin.Context) {
+	var user model.User
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = gameService.ReviewUserName(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OKWithMessage("用户名已通过", c)
+}
+
+func (g *GameApi) RefuseUserName(c *gin.Context) {
+	var user model.User
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = gameService.RefuseUserName(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OKWithMessage("用户已驳回", c)
 }

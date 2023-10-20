@@ -2,6 +2,7 @@ package question
 
 import (
 	"gameday/db/model"
+	"gameday/db/model/request"
 	"gameday/db/model/response"
 	"gameday/service"
 	"github.com/gin-gonic/gin"
@@ -51,5 +52,55 @@ func (q *QuestApi) QuestionsById(c *gin.Context) {
 		return
 	}
 	response.OKWithData(group, "查询成功", c)
+
+}
+
+func (q *QuestApi) AddQuestions(c *gin.Context) {
+	var qGroup *request.QuestionGroup
+	err := c.ShouldBindJSON(&qGroup)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	err = questService.AddQuestions(qGroup)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OKWithMessage("添加成功", c)
+}
+
+func (q *QuestApi) UpdateQuestion(c *gin.Context) {
+	var question *model.Question
+	err := c.ShouldBindJSON(&question)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = questService.UpdateQuestion(question)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	response.OKWithMessage("更新成功", c)
+
+}
+
+func (q *QuestApi) DeleteQuestion(c *gin.Context) {
+	var question *model.Question
+	err := c.ShouldBindJSON(&question)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = questService.DeleteQuestion(question)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OKWithMessage("删除成功", c)
 
 }

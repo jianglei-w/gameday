@@ -36,14 +36,32 @@ func (g *gameGroup) CreateGame(game *model.Game) (*model.Game, error) {
 	return nil, errors.New("重复创建比赛")
 }
 
-//func GetHashByGameId(gameId uint) (*model.Game, error) {
-//	var game *model.Game
-//	err := global.GameDB.Preload("Hashes").Where("id = ?", gameId).Find(&game).Error
-//	if err != nil {
-//		return nil, err
-//	}
-//	return game, nil
-//}
+func (g *gameGroup) StartGame(gameId uint) error {
+	err := global.GameDB.Table("game").Where("id = ?", gameId).Update("status", 1).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (g *gameGroup) StopGame(gameId uint) error {
+	err := global.GameDB.Table("game").Where("id = ?", gameId).Update("status", 2).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (g *gameGroup) DoneGame(gameId uint) error {
+	err := global.GameDB.Table("game").Where("id = ?", gameId).Update("status", 3).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 
 // LastGame 查找最后一场比赛
 func (g *gameGroup) LastGame() (*model.Game, error) {
@@ -89,4 +107,20 @@ func (g *gameGroup) RankList(GameId uint) (*model.Game, error) {
 	return game, nil
 }
 
-//
+func (g *gameGroup) ReviewUserName(user *model.User) error {
+
+	if err := global.GameDB.Table("user").Where("id = ?", user.ID).Update("status", 2).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (g *gameGroup) RefuseUserName(user *model.User) error {
+
+	if err := global.GameDB.Table("user").Where("id = ?", user.ID).Update("status", 3).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
