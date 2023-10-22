@@ -13,8 +13,10 @@ import (
 
 func Routers() *gin.Engine {
 	Router := gin.Default()
-	UserRouter := router.RouterGroupApp.User
+	AdminRouter := router.RouterGroupApp.Admin
 	GameRouter := router.RouterGroupApp.Game
+	UserRouter := router.RouterGroupApp.User
+
 	// 注册swag
 	Router.GET(global.GameConfig.System.RouterPrefix+"/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	global.GameLog.Info("register swag Success")
@@ -31,6 +33,7 @@ func Routers() *gin.Engine {
 
 	}
 	{ // 不需要鉴权的公共接口 login
+		AdminRouter.InitAdminRouter(PublicGroup)
 		UserRouter.InitUserRouter(PublicGroup)
 	}
 
@@ -38,11 +41,14 @@ func Routers() *gin.Engine {
 	PrivateGroup := Router.Group(global.GameConfig.System.RouterPrefix)
 	PrivateGroup.Use(middleware.JWT()) // 中间件
 	{
-		// user类别路由
-		UserRouter.InitTestRouter(PrivateGroup)
+		// admin类别路由
+		AdminRouter.InitTestRouter(PrivateGroup)
 
 		// game类别路由
 		GameRouter.InitGameRouters(PrivateGroup)
+
+		// user类别路由
+		UserRouter.InitAuthRouters(PrivateGroup)
 	}
 
 	global.GameLog.Info("router register success")

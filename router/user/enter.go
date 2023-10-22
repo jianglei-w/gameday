@@ -1,6 +1,5 @@
 package user
 
-type RouterGroup struct {
+type UserGroup struct {
 	UserRouter
-	TestRouter
 }

@@ -1,5 +1,5 @@
-package user
+package admin
 
 type ServiceGroup struct {
-	UserService
+	AdminService
 }

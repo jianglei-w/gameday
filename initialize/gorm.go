@@ -21,6 +21,8 @@ func RegisterTables() {
 		&model.Question{},
 		// 题目组表
 		&model.Group{},
+		// 选手完成的题目
+		&model.Complete{},
 	)
 	if err != nil {
 		global.GameLog.Error("register table failed", zap.Error(err))

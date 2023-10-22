@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"gameday/db/model"
 	"gameday/global"
 	"github.com/google/uuid"
@@ -123,4 +124,17 @@ func (g *gameGroup) RefuseUserName(user *model.User) error {
 	}
 
 	return nil
+}
+
+func (g *gameGroup) GetQuestionsByGameId(game *model.Game) (*model.Group, error) {
+	var group *model.Group
+	if err := global.GameDB.Model(&model.Game{}).Where("id = ?", game.ID).Find(&game).Error; err != nil {
+		return nil, err
+	}
+	if err := global.GameDB.Model(&model.Group{}).Preload("Questions").Where("id = ?", game.GroupID).Find(&group).Error; err != nil {
+		return nil, err
+	}
+
+	fmt.Println(group)
+	return group, nil
 }

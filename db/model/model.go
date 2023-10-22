@@ -18,7 +18,7 @@ type Game struct {
 	gorm.Model
 	Name    string `json:"game_name"`   // 比赛名称
 	People  uint   `json:"people"`      // 参与人数
-	Status  uint   `json:"game_status"` // 0是初始化状态，1是开始比赛，2是暂停比赛，3是删除比赛
+	Status  uint   `json:"game_status"` // 0是初始化状态，1是开始比赛，2是暂停比赛，3是完成比赛
 	GroupID uint   `json:"group_id"`
 	Group   Group  `json:"group"` // 题目组ID
 	Hashes  []User
@@ -41,8 +41,8 @@ func (g *Group) TableName() string {
 
 type User struct {
 	gorm.Model
-	//score = db.relationship('Score', backref='user')
-	//event = db.relationship('Event', backref='user')
+	//score = db.relationship('Score', backref='admin')
+	//event = db.relationship('Event', backref='admin')
 	Hashcode string `json:"hashcode"`
 	Username string `json:"username"`
 	Status   uint   `json:"status" ` // 名字审核状态0：未设置，1: 待审核，2：审核通过，3: 已驳回
@@ -68,3 +68,17 @@ type Question struct {
 func (q *Question) TableName() string {
 	return "question"
 }
+
+// Complete 记录哪些用户完成了哪些题目
+type Complete struct {
+	gorm.Model
+	UserId     uint `json:"user_id"`     // 用户id
+	QuestionId uint `json:"question_id"` // 题目id
+	Score      uint `json:"score"`       // 题目分数
+}
+
+func (s *Complete) TableName() string {
+	return "complete"
+}
+
+// Score 记录用户得分情况

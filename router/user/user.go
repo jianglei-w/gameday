@@ -8,12 +8,27 @@ import (
 type UserRouter struct {
 }
 
-// InitUserRouter 初始化管理员登录路由，无鉴权
 func (ur *UserRouter) InitUserRouter(Router *gin.RouterGroup) (R *gin.IRoutes) {
-	userRouter := Router.Group("admin")
+	router := Router.Group("user")
 	userApi := v1.ApiGroupApp.UserApiGroup
 	{
-		userRouter.POST("login", userApi.Login)
+		router.POST("login", userApi.Login)
 	}
+
+	return R
+}
+
+func (ur *UserRouter) InitAuthRouters(Router *gin.RouterGroup) (R *gin.IRoutes) {
+	router := Router.Group("user")
+	gameApi := v1.ApiGroupApp.GameApiGroup
+	userApi := v1.ApiGroupApp.UserApiGroup
+	{
+		router.POST("userSubject", gameApi.GetQuestionsByGameId)
+		router.POST("updateName", userApi.UpdateUsername)
+		router.POST("getUser", userApi.GetUserByHash)
+		router.POST("completeID", userApi.GetSuccessQuestionByUserId)
+		router.POST("usergrade", userApi.UserScore)
+	}
+
 	return R
 }

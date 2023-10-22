@@ -1,15 +1,17 @@
 package service
 
 import (
+	"gameday/service/admin"
 	"gameday/service/game"
 	"gameday/service/question"
 	"gameday/service/user"
 )
 
 type serviceGroup struct {
-	UserService  user.ServiceGroup
+	AdminService admin.ServiceGroup
 	GameService  game.ServiceGroup
 	QuestService question.ServiceGroup
+	UserService  user.ServiceGroup
 }
 
 var ServiceGroupApp = new(serviceGroup)

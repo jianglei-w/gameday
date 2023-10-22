@@ -3,7 +3,6 @@ package user
 import (
 	"gameday/db/model"
 	myjwt "gameday/db/model/jwt"
-	"gameday/db/model/request"
 	"gameday/db/model/response"
 	"gameday/global"
 	"gameday/service"
@@ -11,43 +10,38 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type BaseApi struct {
+type UserApi struct {
 }
 
-// Login
-//
-//	@Tags		User
-//	@Summary	用户登录
-//	@Produce	json
-//	@Param		data	body	request.Login	true "用户名, 密码"
-//	@Router		/admin/login [post]
-func (b *BaseApi) Login(c *gin.Context) {
+var userService = service.ServiceGroupApp.UserService
+var gameService = service.ServiceGroupApp.GameService
 
-	var l request.Login
-	err := c.ShouldBindJSON(&l)
+func (u *UserApi) Login(c *gin.Context) {
+	var r model.User
+	err := c.ShouldBindJSON(&r)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	u := &model.Admin{Username: l.Username, Password: l.Password}
-	user, err := service.ServiceGroupApp.UserService.Login(u)
+
+	user, err := userService.Login(&r)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	b.TokenNext(c, user)
-	return
+	// 能查到数据，说明一定存在这个hashcode，则登录成功
+
+	u.TokenNext(c, user)
 
 }
 
-// TokenNext 登录以后签发jwt
-func (b *BaseApi) TokenNext(c *gin.Context, user *model.Admin) {
+func (u *UserApi) TokenNext(c *gin.Context, user *model.User) {
 	j := &utils.JWT{
 		SigningKey: []byte(global.GameConfig.JWT.SigningKey),
 	}
 	claims := j.CreateClaims(myjwt.BaseClaims{
 		ID:       user.ID,
-		Username: user.Username,
+		Username: user.Hashcode,
 	})
 
 	token, err := j.CreateToken(claims)
@@ -55,11 +49,28 @@ func (b *BaseApi) TokenNext(c *gin.Context, user *model.Admin) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-	response.OKWithData(response.LoginResponse{
+
+	game, err := gameService.GetHash(user.GameID)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	msg := ""
+	switch game.Status {
+	case 0:
+		msg = "比赛未开始"
+	case 1:
+		msg = "比赛已开始"
+	case 2:
+		msg = "比赛已暂停"
+	case 3:
+		msg = "比赛已结束"
+	}
+	response.OKWithData(response.UserLoginResponse{
 		Id:        user.ID,
-		UserName:  user.Username,
-		Password:  user.Password,
+		HashCode:  user.Hashcode,
 		Token:     token,
+		GameId:    game.ID,
 		ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
-	}, "登录成功", c)
+	}, msg, c)
 }

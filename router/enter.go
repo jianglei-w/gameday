@@ -1,13 +1,15 @@
 package router
 
 import (
+	"gameday/router/admin"
 	"gameday/router/game"
 	"gameday/router/user"
 )
 
 type RouterGroup struct {
-	User user.RouterGroup
-	Game game.RouterGroup
+	Admin admin.RouterGroup
+	Game  game.RouterGroup
+	User  user.UserGroup
 }
 
 var RouterGroupApp = new(RouterGroup)

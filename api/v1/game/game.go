@@ -174,3 +174,21 @@ func (g *GameApi) RefuseUserName(c *gin.Context) {
 
 	response.OKWithMessage("用户已驳回", c)
 }
+
+func (g *GameApi) GetQuestionsByGameId(c *gin.Context) {
+	var game model.Game
+	err := c.ShouldBindJSON(&game)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	group, err := gameService.GetQuestionsByGameId(&game)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	fmt.Println(group)
+	response.OKWithData(group, "查询成功", c)
+
+}

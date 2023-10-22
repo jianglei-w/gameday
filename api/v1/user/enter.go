@@ -1,9 +1,5 @@
 package user
 
-import "gameday/service"
-
 type ApiGroup struct {
-	BaseApi
+	UserApi
 }
-
-var userService = service.ServiceGroupApp.UserService
