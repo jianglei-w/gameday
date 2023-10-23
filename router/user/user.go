@@ -28,6 +28,11 @@ func (ur *UserRouter) InitAuthRouters(Router *gin.RouterGroup) (R *gin.IRoutes) 
 		router.POST("getUser", userApi.GetUserByHash)
 		router.POST("completeID", userApi.GetSuccessQuestionByUserId)
 		router.POST("usergrade", userApi.UserScore)
+		router.POST("stopGame", userApi.StopGame)
+		router.POST("post_answer", userApi.PostAnswer)
+		router.POST("rankingList", userApi.RankingList)
+		router.POST("userThing", userApi.UserThing)
+		router.POST("event", userApi.Event)
 	}
 
 	return R
