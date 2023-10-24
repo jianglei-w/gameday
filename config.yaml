@@ -1,0 +1,34 @@
+zap:
+  level: info
+  prefix: '[GameDay]'
+  format: console
+  director: log
+  encode-level: LowercaseColorLevelEncoder
+  stacktrace-key: stacktrace
+  max-age: 0
+  show-line: true
+  log-in-console: true
+mysql:
+    prefix: ""
+    port: "3306"
+    config: charset=utf8mb4&parseTime=True&loc=Local
+    db-name: game
+    username: root
+    password: root
+    path: db
+    engine: ""
+    log-mode: error
+    max-idle-conns: 10
+    max-open-conns: 100
+    singular: false
+    log-zap: false
+system:
+  env: public
+  router-prefix: ""
+  addr: 8888
+  use-redis: false
+jwt:
+  signing-key: jianglei
+  expires-time: 1d
+  buffer-time: 1d
+  issuer: jianglei
