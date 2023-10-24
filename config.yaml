@@ -1,4 +1,4 @@
-zap:
+ap:
   level: info
   prefix: '[GameDay]'
   format: console
